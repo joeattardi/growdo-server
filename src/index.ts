@@ -1,16 +1,17 @@
 import Fastify from 'fastify';
+import { initializeDatabase } from './db';
+// import { getTodos } from './db';
 
-const server = Fastify({
-    logger: true
-});
+const server = Fastify();
 
-server.get('/', async (request, reply) => {
-    return { hello: 'world' };
-});
+// server.get('/todos', async (request, reply) => {
+//     const todos = getTodos();
+//     return todos;
+// });
 
 async function start() {
+    initializeDatabase();
     await server.listen({ port: 3000 });
-    server.log.info(`Server listening on ${server.server.address()}`);
 }
 
 start();
