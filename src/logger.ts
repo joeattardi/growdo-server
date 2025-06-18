@@ -16,8 +16,6 @@ const logger = winston.createLogger({
     ]
 });
 
-// TODO: add file logs
-
 if (process.env.NODE_ENV !== 'production') {
     logger.add(
         new winston.transports.Console({
