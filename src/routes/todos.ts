@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import { createTodo, getTodo, getTodos } from '../db/todos';
 import { Todo } from '../db/types';
+import { todoSchema } from '../schemas/todo';
 
 type GetTodoParams = { id: string };
 
@@ -10,7 +11,11 @@ export const todos: FastifyPluginAsync = async (server, options) => {
         return todos;
     });
 
-    server.post('/todos', (request, reply) => {
+    server.post('/todos', {
+        schema: {
+            body: todoSchema
+        }
+    }, (request, reply) => {
         const todo = createTodo(request.body as Todo);
         reply.code(201).send(todo);
     });

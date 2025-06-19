@@ -9,7 +9,6 @@ async function start() {
     initializeDatabase();
 
     const server = Fastify();
-
     server.register(todos, { prefix: '/api' });
 
     await server.listen({ port: 3000 });
