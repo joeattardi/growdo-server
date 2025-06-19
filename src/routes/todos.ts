@@ -17,7 +17,15 @@ export const todos: FastifyPluginAsync = async (server, options) => {
         }
     }, (request, reply) => {
         const todo = createTodo(request.body as Todo);
-        reply.code(201).send(todo);
+
+        if (todo) {
+            return reply
+                .code(201)
+                .header('Location', `/api/todos/${todo.id}`)
+                .send(todo);
+        }
+
+        reply.code(500).send({ error: 'Failed to create todo' });
     });
 
     server.get<{ Params: GetTodoParams }>('/todos/:id', (request, reply) => {
