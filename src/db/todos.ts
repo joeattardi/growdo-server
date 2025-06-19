@@ -40,3 +40,14 @@ export function createTodo(todo: Todo) {
 
     return getTodo(lastInsertRowid as number)
 }
+
+export function updateTodo(id: number, todo: Todo) {
+    db.prepare('UPDATE todos SET title = ?, description = ?, completed = ? WHERE id = ?').run(
+        todo.title,
+        todo.description,
+        todo.completed ? 1 : 0,
+        id
+    );
+
+    return getTodo(id);
+}
