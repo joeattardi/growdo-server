@@ -51,3 +51,8 @@ export function updateTodo(id: number, todo: Todo) {
 
     return getTodo(id);
 }
+
+export function deleteTodo(id: number) {
+    const result = db.prepare('DELETE FROM todos WHERE id = ?').run(id);
+    return result.changes === 1;
+}

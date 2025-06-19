@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { createTodo, getTodo, getTodos, updateTodo } from '../db/todos';
+import { createTodo, getTodo, getTodos, updateTodo, deleteTodo } from '../db/todos';
 import { Todo } from '../db/types';
 import { todoSchema } from '../schemas/todo';
 
@@ -53,4 +53,12 @@ export const todos: FastifyPluginAsync = async (server, options) => {
             }
         }
     );
+
+    server.delete<{ Params: { id: string } }>('/todos/:id', (request, reply) => {
+        if (deleteTodo(Number(request.params.id))) {
+            return reply.code(204).send();
+        }
+
+        reply.code(404).send({ error: 'Todo not found' });
+    });
 };
