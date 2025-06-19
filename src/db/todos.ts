@@ -14,10 +14,29 @@ export function getTodos() {
     return todos;
 }
 
+export function getTodo(id: number) {
+    const row: any = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
+
+    if (!row) {
+        return null;
+    }
+
+    const todo: Todo = {
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        completed: row.completed === 1
+    };
+
+    return todo;
+}
+
 export function createTodo(todo: Todo) {
-    db.prepare('INSERT INTO todos (title, description, completed) VALUES (?, ?, ?)').run(
+    const { lastInsertRowid } = db.prepare('INSERT INTO todos (title, description, completed) VALUES (?, ?, ?)').run(
         todo.title,
         todo.description,
         todo.completed ? 1 : 0
     );
+
+    return getTodo(lastInsertRowid as number)
 }
